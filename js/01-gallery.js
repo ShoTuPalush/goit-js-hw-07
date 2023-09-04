@@ -12,9 +12,9 @@ const galleryMarkup = galleryItems
         <a class='gallery__link' href='${item.original}'>
             <img 
                 class='gallery__image'
-                src=${item.preview}
-                alt=${item.description}
-                data-source=${item.original}
+                src='${item.preview}'
+                alt='${item.description}'
+                data-source='${item.original}'
             >
         </a>
     </li>`
