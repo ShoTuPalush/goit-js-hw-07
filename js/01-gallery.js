@@ -3,7 +3,6 @@ import { galleryItems } from "./gallery-items.js";
 
 const gallery = document.querySelector(".gallery");
 gallery.addEventListener("click", openImages);
-document.addEventListener("keydown", closeImages);
 
 const galleryMarkup = galleryItems
   .map(
@@ -22,13 +21,21 @@ const galleryMarkup = galleryItems
   .join("");
 gallery.innerHTML = galleryMarkup;
 
-const modal = basicLightbox.create(`
-    <div class="modal">
-        <img
-            src=''
-        >
-    </div>
-`);
+const modal = basicLightbox.create(
+  `
+      <img
+          src=''
+      >
+`,
+  {
+    onShow: (modal) => {
+      document.addEventListener("keydown", closeImages);
+    },
+    onClose: (modal) => {
+      document.removeEventListener("keydown", closeImages);
+    },
+  }
+);
 
 function openImages(event) {
   event.preventDefault();
@@ -37,13 +44,11 @@ function openImages(event) {
   }
   modal.element().querySelector("img").src =
     event.target.getAttribute("data-source");
-  document.addEventListener("keydown", closeImages);
   modal.show();
 }
 
 function closeImages(event) {
   if (event.code === "Escape") {
     modal.close();
-    document.removeEventListener("keydown", closeImages);
   }
 }
